@@ -5,51 +5,6 @@ Scala Spark MLlib provides a wide range of machine learning methods for various 
 ### Linear Regression
 A method for regression that assumes a linear relationship between the dependent variable and the independent variables.
 
-First, you will need to import the necessary libraries:
-```scala
-import org.apache.spark.ml.regression.LinearRegression
-import org.apache.spark.ml.feature.VectorAssembler
-import org.apache.spark.ml.linalg.Vectors
-```
-
-Next, you will need to load your data into a DataFrame. For example, let's assume you have a CSV file called ```linear_data.csv``` with two columns, x and y, containing your independent and dependent variables respectively.
-
-```scala
-val data = spark.read
-    .format("csv")
-    .option("header", "true")
-    .option("inferSchema", "true")
-    .load("linear_data.csv")
-```
-Then, you will need to prepare your data for modeling. In this case, we will create a new column called features that combines our x values into a vector.
-
-```scala
-val assembler = new VectorAssembler()
-    .setInputCols(Array("x"))
-    .setOutputCol("features")
-val data2 = assembler.transform(data)
-    .select($"features", $"y".alias("label"))
-```
-Now, we can train our linear regression model on the data:
-
-```scala
-val lr = new LinearRegression()
-val model = lr.fit(data2)
-```
-
-Finally, we can use our model to make predictions on new data:
-
-```scala
-val newData = Seq(
-    (Vectors.dense(5)), 
-    (Vectors.dense(10)), 
-    (Vectors.dense(15))
-    ).toDF("features")
-val predictions = model.transform(newData)
-predictions.show()
-```
-This will output the predicted y values for the new x values of 5, 10, and 15.
-
 ### Logistic Regression
 A method for binary classification that models the probability of the positive class using a logistic function.
 

@@ -101,7 +101,7 @@ object IrisClassification extends App {
 
   // Fit the model to the training data
   val pipeline = new Pipeline()
-    .setStages(Array(assembler, labelIndexer, lr, labelConverter))
+    .setStages(Array(labelIndexer, assembler, lr, labelConverter))
   val model = pipeline.fit(train)
 
   // Make predictions on the test data

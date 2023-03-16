@@ -25,13 +25,6 @@ object LogisticRegressionTutorial extends App {
     .setRegParam(0.3)
     .setElasticNetParam(0.8)
 
-  // We can also use the multinomial family for binary classification
-  val mlr = new LogisticRegression()
-    .setMaxIter(5)
-    .setRegParam(0.3)
-    .setElasticNetParam(0.8)
-    .setFamily("multinomial")
-
   // Create an evaluator to check the result on test data
   val evaluator = new RegressionEvaluator()
     .setLabelCol("label")
@@ -43,11 +36,6 @@ object LogisticRegressionTutorial extends App {
   val lrPredictions = lrModel.transform(testData)
   val lrRmse = evaluator.evaluate(lrPredictions)
   println(s"RMSE: $lrRmse")
-
-  val mlrModel = mlr.fit(trainData)
-  val mlrPredictions = mlrModel.transform(testData)
-  val mlrRmse = evaluator.evaluate(mlrPredictions)
-  println(s"RMSE: $mlrRmse")
 
   // Plot the training loss histogram
   val losses = lrModel.summary.objectiveHistory
